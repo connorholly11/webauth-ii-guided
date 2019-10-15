@@ -39,6 +39,18 @@ router.post("/login", (req, res) => {
     });
 });
 
-router.get("/logout", (req, res) => []);
+router.get("/logout", (req, res) => {
+  if (req.session) {
+    req.session.destroy(error => {
+      if (error) {
+        res.status(401).json(error);
+      } else {
+        res.status(200).json({ message: "session destroyed" });
+      }
+    });
+  } else {
+    res.status(200).json({ message: "you were never here!" });
+  }
+});
 
 module.exports = router;
